@@ -112,7 +112,7 @@
 (require 'init-pomodoro)
 (require 'init-undo-tree)
 (require 'init-moz)
-(require 'init-evil) ; use evil mode (vi key binding)
+;(require 'init-evil) ; use evil mode (vi key binding)
 
 (require 'init-misc)
 ;;----------------------------------------------------------------------------
@@ -138,7 +138,7 @@
 ;;----------------------------------------------------------------------------
 ;; Locales (setting them earlier in this file doesn't work in X)
 ;;----------------------------------------------------------------------------
-;(require 'init-locales) ;does not work in cygwin
+(require 'init-locales) ;does not work in cygwin
 
 
 (when (require 'time-date nil t)
