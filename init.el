@@ -92,7 +92,7 @@
 (require 'init-org2blog)
 (require 'init-fill-column-indicator)
 (require 'init-yasnippet)
-(require 'init-better-registers)
+;(require 'init-better-registers)
 (require 'init-yari)
 ;(require 'init-etags-select)
 (require 'init-cc-mode)
