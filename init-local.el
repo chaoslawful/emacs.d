@@ -5,8 +5,6 @@
 
 ; Use spaces instead of tabs for indention
 (setq-default indent-tabs-mode nil)
-; Place backup of all files to the specified directory
-(setq backup-directory-alist (quote ((".*" . "~/tmp/.emacs_backups"))))
 ; Auto break lines when they become too wide
 (setq auto-fill-mode 1)
 
@@ -48,6 +46,9 @@
 ;; anything to the initial frame if it's in your .emacs, since that file is
 ;; read _after_ the initial frame is created.
 (add-hook 'after-make-frame-functions 'toggle-fullscreen)
+
+;; Make Ctrl-j eval and print last s-exp
+(global-set-key "\C-j" 'eval-print-last-sexp)
 
 ; Compile display color remove ^[[0m
 (require 'ansi-color)

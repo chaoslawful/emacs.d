@@ -145,6 +145,7 @@
    (message "Emacs startup time: %d seconds."
     (time-to-seconds (time-since emacs-load-start-time)))
    )
+
 ;;; Local Variables:
 ;;; no-byte-compile: t
 ;;; End:

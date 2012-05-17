@@ -16,9 +16,9 @@
 
 ;; Options for \lset （commandreference to listing Manual)
 (setq org-export-latex-listings-options
-      '(("basicstyle" "\\color{foreground}\\small\\mono") ; 源代码字体样式
-        ("keywordstyle" "\\color{function}\\bfseries\\small\\mono") ; 关键词字体样式
-        ("identifierstyle" "\\color{doc}\\small\\mono")
+      '(("basicstyle" "\\color{foreground}\\small") ; 源代码字体样式
+        ("keywordstyle" "\\color{function}\\bfseries\\small") ; 关键词字体样式
+        ("identifierstyle" "\\color{doc}\\small")
         ("commentstyle" "\\color{comment}\\small\\itshape") ; 批注样式
         ("stringstyle" "\\color{string}\\small") ; 字符串样式
         ("showstringspaces" "false")          ; 字符串空格显示
@@ -35,11 +35,14 @@
         ("frame" "single") ; 代码框：阴影盒
         ("frameround" "tttt") ; 代码框：圆角
         ("framesep" "0pt")
-        ("framerule" "8pt")
+        ("framerule" "3pt")
         ("rulecolor" "\\color{background}")
         ("fillcolor" "\\color{white}")
         ("rulesepcolor" "\\color{comdil}")
-        ("framexleftmargin" "10mm")))
+        ("framexleftmargin" "15mm")
+        ("xleftmargin" "15mm")
+        ("escapeinside" "{(*@}{@*)}")
+        ))
 
 ;; 执行两遍 xelatex 生成 PDF，以便正常产生含中文的目录
 (setq org-latex-to-pdf-process
@@ -136,7 +139,7 @@
 \\usepackage{natbib}
 \\usepackage{fancyhdr}
 
-\\hypersetup{unicode=true}
+\\hypersetup{unicode=true, urlcolor=[rgb]{1,0,0}, linkcolor=[rgb]{0,1,0}}
 \\geometry{a4paper, textwidth=6.5in, textheight=10in, marginparsep=7pt, marginparwidth=.6in}
 
 \\definecolor{foreground}{RGB}{220,220,204}
@@ -170,16 +173,13 @@
 ;; #+LaTeX_CLASS: beamer in org files
 (add-to-list 'org-export-latex-classes
              '("beamer"
-               "\\documentclass[11pt, professionalfonts]{beamer}
-\\mode<{{{beamermode}}}>
-\\usetheme{{{{beamertheme}}}}
-\\usecolortheme{{{{beamercolortheme}}}}
+               "\\documentclass[11pt, professionalfonts, nofontenc]{beamer}
+\\usepackage{fontspec, xunicode, xltxtra}
+\\usepackage[slantfont, boldfont]{xeCJK} % 允许斜体和粗体
+\\usepackage[xetex, colorlinks=true, CJKbookmarks=true, linkcolor=blue, menucolor=blue]{hyperref}
 
 \\beamertemplateballitem
 \\setbeameroption{show notes}
-
-\\usepackage{fontspec, xunicode, xltxtra}
-\\usepackage[slantfont, boldfont]{xeCJK} % 允许斜体和粗体
 
 \\setCJKmainfont{WenQuanYi Micro Hei} % 默认中文字体
 \\setCJKmonofont{WenQuanYi Micro Hei Mono} % 中文等宽字体
@@ -197,12 +197,33 @@
 \\usepackage{verbatim}
 \\usepackage{listings}
 
-\\institute{{{{beamerinstitute}}}}
-\\subject{{{{beamersubject}}}}"
+\\hypersetup{unicode=true}
+
+\\definecolor{foreground}{RGB}{220,220,204}
+\\definecolor{background}{RGB}{62,62,62}
+\\definecolor{preprocess}{RGB}{250,187,249}
+\\definecolor{var}{RGB}{239,224,174}
+\\definecolor{string}{RGB}{154,150,230}
+\\definecolor{type}{RGB}{225,225,116}
+\\definecolor{function}{RGB}{140,206,211}
+\\definecolor{keyword}{RGB}{239,224,174}
+\\definecolor{comment}{RGB}{180,98,4}
+\\definecolor{doc}{RGB}{175,215,175}
+\\definecolor{comdil}{RGB}{111,128,111}
+\\definecolor{constant}{RGB}{220,162,170}
+\\definecolor{buildin}{RGB}{127,159,127}
+
+[NO-DEFAULT-PACKAGES]
+[NO-PACKAGES]"
                ("\\section{%s}" . "\\section*{%s}")
                ("\\begin{frame}[fragile]\\frametitle{%s}"
                 "\\end{frame}"
                 "\\begin{frame}[fragile]\\frametitle{%s}"
                 "\\end{frame}")))
+
+;; Use evince to open PDF files
+(eval-after-load "org"
+  '(progn
+     (setcdr (assoc "\\.pdf\\'" org-file-apps) "evince %s")))
 
 (provide 'my-org-settings)
