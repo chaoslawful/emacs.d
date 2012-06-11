@@ -1,6 +1,5 @@
 ;; Org mode settings
 
-(add-to-list 'load-path "~/mydata/conf/elisp/org/lisp/")
 (add-to-list 'auto-mode-alist '("\\.\\(org\\|org_archive\\|txt\\)$" . org-mode))
 
 (require 'org-install)
@@ -11,14 +10,17 @@
 (global-set-key "\C-ca" 'org-agenda)
 (global-set-key "\C-cb" 'org-iswitchb)
 
-; 用 listing 宏包格式化代码
+;; 默认以缩进方式打开 org 文件
+(setq org-startup-indented t)
+
+;; 用 listing 宏包格式化代码
 (setq org-export-latex-listings t)
 
-;; Options for \lset （commandreference to listing Manual)
+;; Options for \lset
 (setq org-export-latex-listings-options
-      '(("basicstyle" "\\color{foreground}\\small") ; 源代码字体样式
-        ("keywordstyle" "\\color{function}\\bfseries\\small") ; 关键词字体样式
-        ("identifierstyle" "\\color{doc}\\small")
+      '(("basicstyle" "\\color{foreground}\\small\\mono") ; 源代码字体样式
+        ("keywordstyle" "\\color{function}\\bfseries\\small\\mono") ; 关键词字体样式
+        ("identifierstyle" "\\color{doc}\\small\\mono")
         ("commentstyle" "\\color{comment}\\small\\itshape") ; 批注样式
         ("stringstyle" "\\color{string}\\small") ; 字符串样式
         ("showstringspaces" "false")          ; 字符串空格显示
@@ -39,8 +41,8 @@
         ("rulecolor" "\\color{background}")
         ("fillcolor" "\\color{white}")
         ("rulesepcolor" "\\color{comdil}")
-        ("framexleftmargin" "15mm")
-        ("xleftmargin" "15mm")
+        ("framexleftmargin" "10mm")
+        ("xleftmargin" "10mm")
         ("escapeinside" "{(*@}{@*)}")
         ))
 
@@ -63,7 +65,7 @@
 
 ;; Record time when todo is done
 (setq org-log-done 'time)
-(setq org-agenda-files '("~/mydata/org/work.org"))
+(setq org-agenda-files '("~/mydata/org/work.org" "~/mydata/org/home.org"))
 
 ;; flyspell mode for spell checking everywhere
 (add-hook 'org-mode-hook 'turn-on-flyspell 'append)
@@ -118,6 +120,11 @@
 \\setsansfont{Trebuchet MS} % 英文无衬线字体
 \\punctstyle{kaiming} % 开明式标点格式: 句末点号用全角, 其他半角
 
+% 定义\\mono字体命令供listings宏配置使用
+\\newcommand\\fontnamemono{Monaco}
+\\newfontinstance\\MONO{\\fontnamemono}
+\\newcommand{\\mono}[1]{{\\MONO #1}}
+
 \\usepackage{graphicx}
 \\usepackage{xcolor}
 \\usepackage{lmodern}
@@ -139,7 +146,7 @@
 \\usepackage{natbib}
 \\usepackage{fancyhdr}
 
-\\hypersetup{unicode=true, urlcolor=[rgb]{1,0,0}, linkcolor=[rgb]{0,1,0}}
+\\hypersetup{urlcolor=[rgb]{1,0,0}, linkcolor=[rgb]{0,0,1}}
 \\geometry{a4paper, textwidth=6.5in, textheight=10in, marginparsep=7pt, marginparwidth=.6in}
 
 \\definecolor{foreground}{RGB}{220,220,204}
@@ -188,6 +195,11 @@
 \\setsansfont{Trebuchet MS} % 英文无衬线字体
 \\punctstyle{kaiming} % 开明式标点格式: 句末点号用全角, 其他半角
 
+% 定义\\mono字体命令供listings宏配置使用
+\\newcommand\\fontnamemono{Monaco}
+\\newfontinstance\\MONO{\\fontnamemono}
+\\newcommand{\\mono}[1]{{\\MONO #1}}
+
 \\usepackage{graphicx}
 \\usepackage{tikz}
 \\usepackage{xcolor}
@@ -197,7 +209,7 @@
 \\usepackage{verbatim}
 \\usepackage{listings}
 
-\\hypersetup{unicode=true}
+\\hypersetup{urlcolor=[rgb]{1,0,0}, linkcolor=[rgb]{0,0,1}}
 
 \\definecolor{foreground}{RGB}{220,220,204}
 \\definecolor{background}{RGB}{62,62,62}
