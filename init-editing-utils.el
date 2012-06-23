@@ -29,7 +29,7 @@
 ;;----------------------------------------------------------------------------
 ;; Zap *up* to char is a more sensible default
 ;;----------------------------------------------------------------------------
-(autoload 'zap-up-to-char "misc" "Kill up to ARGth occurrence of CHAR.")
+(autoload 'zap-up-to-char "misc" "Kill up to, but not including ARGth occurrence of CHAR.")
 (global-set-key (kbd "M-z") 'zap-up-to-char)
 (global-set-key (kbd "M-Z") 'zap-to-char)
 
@@ -149,25 +149,6 @@
              (,mode-name 1)))))))
 
 (suspend-mode-during-cua-rect-selection 'whole-line-or-region-mode)
-
-
-;;----------------------------------------------------------------------------
-;; Unfill regions or paragraphs (see http://xahlee.org/emacs/emacs_unfill-paragraph.html)
-;;----------------------------------------------------------------------------
-(defun unfill-paragraph ()
-  "Replace newline chars in current paragraph by single spaces.
-This command does the reverse of `fill-paragraph'."
-  (interactive)
-  (let ((fill-column most-positive-fixnum))
-    (fill-paragraph nil)))
-
-(defun unfill-region (start end)
-  "Replace newline chars in region by single spaces.
-This command does the reverse of `fill-region'."
-  (interactive "r")
-  (let ((fill-column most-positive-fixnum))
-    (fill-region start end)))
-
 
 
 ;;----------------------------------------------------------------------------

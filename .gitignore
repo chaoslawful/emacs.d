@@ -8,6 +8,8 @@ CVS
 .svn
 *~
 *.log
+.yas-compiled-snippets.el
+.bookmarks.el
 .cvsignore
 .*.lock
 /tramp
@@ -21,3 +23,5 @@ cookies
 /elpa
 site-lisp/package/
 /swank
+abbrev_defs
+

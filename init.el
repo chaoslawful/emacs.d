@@ -46,7 +46,6 @@
 (require 'init-recentf)
 (require 'init-ido)
 (require 'init-hippie-expand)
-(require 'init-auto-complete)
 (require 'init-windows)
 (require 'init-sessions)
 (require 'init-fonts)
@@ -92,11 +91,12 @@
 (require 'init-org2blog)
 (require 'init-fill-column-indicator)
 (require 'init-yasnippet)
-;(require 'init-better-registers)
+(require 'init-better-registers) ; C-x j - jump to register
+(require 'init-zencoding-mode) ;behind init-better-register to override C-j
 (require 'init-yari)
 ;(require 'init-etags-select)
 (require 'init-cc-mode)
-;(require 'init-auto-complete-clang)
+(require 'init-auto-complete) ; after init-yasnippeta to override TAB
 (require 'init-semantic)
 (require 'init-cmake-mode)
 (require 'init-csharp-mode)
@@ -112,8 +112,7 @@
 (require 'init-pomodoro)
 (require 'init-undo-tree)
 (require 'init-moz)
-;(require 'init-evil) ; use evil mode (vi key binding)
-
+(require 'init-evil) ; use evil mode (vi key binding)
 (require 'init-misc)
 ;;----------------------------------------------------------------------------
 ;; Allow access from emacsclient

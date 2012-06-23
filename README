@@ -42,11 +42,16 @@ try to list them HERE,
     * jsl
     * ispell
     * tidy
+    * clang
+      auto-complete/intellisense by using clang (http://clang.llvm.org)
     * pyflakes 
       install pip, then `pip install pyflakes`, but on cygwin you need install
       setuptool in order to install pip.
 
-Warnings,
+If you find any bug, please file an issue on the github project:
+https://github.com/redguardtoo/emacs.d
+
+WARNINGS,
    * by default EVIL (Vim emulation in Emacs) is used. You can comment out 
    line containing "(require 'init-evil)" in init.el to unload it.
    * Some package cannot be downloaded automatically because of network problem.

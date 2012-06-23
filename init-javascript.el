@@ -33,7 +33,10 @@
 (setq js3-auto-indent-p t
       js3-enter-indents-newline t
       js3-indent-on-enter-key t
-      js3-indent-level preferred-javascript-indent-level)
+      js3-indent-level preferred-javascript-indent-level
+      js3-highlight-external-variables t
+      js3-allow-keywords-as-property-names nil
+      )
 
 ;; js-mode
 (setq js-indent-level preferred-javascript-indent-level)
