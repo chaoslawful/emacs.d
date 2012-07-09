@@ -78,11 +78,13 @@ ARCHIVE is the string name of the package archive.")
       (lambda (package version archive)
         (or (not (string-equal archive "melpa"))
             (not (memq package
-                       '(jump rinari ruby-compilation slime
-                              color-theme-sanityinc-solarized
-                              color-theme-sanityinc-tomorrow
-                              elisp-slime-nav
-                              findr))))))
+                       '(
+                         ruby-compilation
+                         slime
+                         color-theme-sanityinc-solarized
+                         color-theme-sanityinc-tomorrow
+                         elisp-slime-nav
+                         findr))))))
 
 
 (defadvice package-download-transaction
@@ -213,5 +215,9 @@ ARCHIVE is the string name of the package archive.")
 (require-package 'track-closed-files)
 (require-package 'auctex)
 (require-package 'evil)
+(require-package 'w3m)
+(require-package 'sunrise-commander)
+(require-package 'idomenu)
+(require-package 'ctags)
 
 (provide 'init-elpa)
