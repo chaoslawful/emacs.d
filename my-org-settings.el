@@ -18,15 +18,13 @@
 
 ;; Options for \lset
 (setq org-export-latex-listings-options
-      '(("basicstyle" "\\color{foreground}\\small\\mono") ; 源代码字体样式
-        ("keywordstyle" "\\color{function}\\bfseries\\small\\mono") ; 关键词字体样式
-        ("identifierstyle" "\\color{doc}\\small\\mono")
-        ("commentstyle" "\\color{comment}\\small\\itshape") ; 批注样式
-        ("stringstyle" "\\color{string}\\small") ; 字符串样式
+      '(("basicstyle" "\\color{foreground}\\tiny\\mono") ; 源代码字体样式
+        ("keywordstyle" "\\color{function}\\bfseries\\tiny\\mono") ; 关键词字体样式
+        ("identifierstyle" "\\color{doc}\\tiny\\mono")
+        ("commentstyle" "\\color{comment}\\tiny\\itshape") ; 批注样式
+        ("stringstyle" "\\color{string}\\tiny") ; 字符串样式
         ("showstringspaces" "false")          ; 字符串空格显示
-        ("numbers" "left")                    ; 行号显示
-        ("numberstyle" "\\color{preprocess}") ; 行号样式
-        ("stepnumber" "1")                    ; 行号递增
+        ("numbers" "none")                    ; 不显示行号
         ("backgroundcolor" "\\color{background}") ; 代码框背景色
         ("tabsize" "4")           ; 等效空格数TAB
         ("captionpos" "t")        ; 标题位置top or buttom(t|b)
@@ -41,8 +39,8 @@
         ("rulecolor" "\\color{background}")
         ("fillcolor" "\\color{white}")
         ("rulesepcolor" "\\color{comdil}")
-        ("framexleftmargin" "10mm")
-        ("xleftmargin" "10mm")
+        ("framexleftmargin" "5mm")
+        ("xleftmargin" "5mm")
         ("escapeinside" "{(*@}{@*)}")
         ))
 
@@ -111,7 +109,7 @@
                "\\documentclass[12pt, a4paper]{article}
 \\usepackage{fontspec, xunicode, xltxtra}
 \\usepackage[slantfont, boldfont]{xeCJK} % 允许斜体和粗体
-\\usepackage[xetex, colorlinks=true, CJKbookmarks=true, linkcolor=blue, menucolor=blue]{hyperref}
+\\usepackage[xetex, colorlinks=true, CJKbookmarks=true, urlcolor=red, linkcolor=blue, menucolor=blue]{hyperref}
 
 \\setCJKmainfont{WenQuanYi Micro Hei} % 默认中文字体
 \\setCJKmonofont{WenQuanYi Micro Hei Mono} % 中文等宽字体
@@ -146,7 +144,6 @@
 \\usepackage{natbib}
 \\usepackage{fancyhdr}
 
-\\hypersetup{urlcolor=[rgb]{1,0,0}, linkcolor=[rgb]{0,0,1}}
 \\geometry{a4paper, textwidth=6.5in, textheight=10in, marginparsep=7pt, marginparwidth=.6in}
 
 \\definecolor{foreground}{RGB}{220,220,204}
@@ -183,7 +180,7 @@
                "\\documentclass[11pt, professionalfonts, nofontenc]{beamer}
 \\usepackage{fontspec, xunicode, xltxtra}
 \\usepackage[slantfont, boldfont]{xeCJK} % 允许斜体和粗体
-\\usepackage[xetex, colorlinks=true, CJKbookmarks=true, linkcolor=blue, menucolor=blue]{hyperref}
+\\usepackage[xetex, colorlinks=true, CJKbookmarks=true, urlcolor=red, linkcolor=blue, menucolor=blue]{hyperref}
 
 \\beamertemplateballitem
 \\setbeameroption{show notes}
@@ -208,8 +205,6 @@
 \\usepackage{polyglossia}
 \\usepackage{verbatim}
 \\usepackage{listings}
-
-\\hypersetup{urlcolor=[rgb]{1,0,0}, linkcolor=[rgb]{0,0,1}}
 
 \\definecolor{foreground}{RGB}{220,220,204}
 \\definecolor{background}{RGB}{62,62,62}
