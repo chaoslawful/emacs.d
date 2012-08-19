@@ -30,7 +30,12 @@
 
 ; Enable ibus client
 (require 'ibus)
+;; Turn on ibus-mode automatically after loading .emacs
 (add-hook 'after-init-hook 'ibus-mode-on)
+;; Choose your key to toggle input status:
+;;(global-set-key (kbd "C-\\") 'ibus-toggle)
+;; Archlinux uses Python 3, so add this
+(custom-set-variables '(ibus-python-shell-command-name "python2"))
 
 (defun toggle-fullscreen (&optional f)
   (interactive)
