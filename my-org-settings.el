@@ -72,10 +72,10 @@
 (setq org-agenda-window-setup 'current-window)
 
 ;; ditaa path 可考虑换成 DitaaEps
-(setq org-ditaa-jar-path "/usr/share/ditaa/ditaa.jar")
+(setq org-ditaa-jar-path "/usr/share/java/ditaa/ditaa-0_9.jar")
 
 ;; PlantUML path
-(setq org-plantuml-jar-path "/opt/plantuml/plantuml-7535-SNAPSHOT.jar")
+(setq org-plantuml-jar-path "/opt/plantuml/plantuml.jar")
 
 ;; 加载各种语言的支持Babel
 (org-babel-do-load-languages 'org-babel-load-languages
