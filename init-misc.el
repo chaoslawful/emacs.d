@@ -168,7 +168,10 @@
      1)
   )
 
-(eval-after-load "speedbar" '(if (load "mwheel" t) (mwheel-install)))
+(eval-after-load "speedbar" '(if (load "mwheel" t)
+                               ;; Enable wheelmouse support by default
+                               (cond (window-system
+                                       (mwheel-install)))))
 
 (track-closed-files-mode)
 
@@ -190,8 +193,11 @@
 
 (define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
 
-;; move window/buffer
-(require 'buffer-move)
+;;move-text stuff, move line up/down by pressing hotkey
+(global-set-key (kbd "M-p") 'move-text-up)
+(global-set-key (kbd "M-n") 'move-text-down)
+
+;; move window
 (require 'window-numbering)
 (window-numbering-mode 1)
 

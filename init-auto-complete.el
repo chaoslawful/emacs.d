@@ -1,4 +1,4 @@
-;; @see http://cx4a.org/software/auto-complete/manual.html 
+;; @see http://cx4a.org/software/auto-complete/manual.html
 (require 'auto-complete-config)
 (global-auto-complete-mode) ; recommended way to (setq global-auto-complete-mode), see info
 (setq ac-auto-start nil) ; popup candidates when you press each character is annoying
@@ -29,18 +29,29 @@
 ;; @see https://github.com/brianjcj/auto-complete-clang
 (defun my-ac-cc-mode-setup ()
   (require 'auto-complete-clang)
-  (setq ac-sources (append '(ac-source-clang) ac-sources))
+  (when (and (not *cygwin*) (not *win32*))
+    ; I don't do C++ stuff with cygwin+clang
+    (setq ac-sources (append '(ac-source-clang) ac-sources))
+    )
   (setq clang-include-dir-str
         (cond
          (*is-a-mac* "
- /usr/llvm-gcc-4.2/bin/../lib/gcc/i686-apple-darwin11/4.2.1/include
- /usr/include/c++/4.2.1
- /usr/include/c++/4.2.1/backward
- /usr/local/include
- /Applications/Xcode.app/Contents/Developer/usr/llvm-gcc-4.2/lib/gcc/i686-apple-darwin11/4.2.1/include
- /usr/include
+/usr/llvm-gcc-4.2/bin/../lib/gcc/i686-apple-darwin11/4.2.1/include
+/usr/include/c++/4.2.1
+/usr/include/c++/4.2.1/backward
+/usr/local/include
+/Applications/Xcode.app/Contents/Developer/usr/llvm-gcc-4.2/lib/gcc/i686-apple-darwin11/4.2.1/include
+/usr/include
 ")
-         (t "
+         (*cygwin* "
+/usr/lib/gcc/i686-pc-cygwin/3.4.4/include/c++/i686-pc-cygwin
+/usr/lib/gcc/i686-pc-cygwin/3.4.4/include/c++/backward
+/usr/local/include
+/usr/lib/gcc/i686-pc-cygwin/3.4.4/include
+/usr/include
+/usr/lib/gcc/i686-pc-cygwin/3.4.4/../../../../include/w32api
+")
+         (*linux* "
 /usr/include
 /usr/lib/wx/include/gtk2-unicode-release-2.8
 /usr/include/wx-2.8
@@ -56,12 +67,13 @@
 /usr/include/freetype2
 /usr/include/libpng14
 ")
+         (t "") ; other platforms
          )
         )
   (setq ac-clang-flags
         (mapcar (lambda (item) (concat "-I" item))
                 (split-string clang-include-dir-str)))
-  ;(setq ac-clang-auto-save t)
+  (setq ac-clang-auto-save t)
   )
 (add-hook 'c-mode-common-hook 'my-ac-cc-mode-setup)
 
