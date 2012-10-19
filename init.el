@@ -19,6 +19,14 @@
 (setq *emacs23* (and (not *xemacs*) (or (>= emacs-major-version 23))) )
 
 ;----------------------------------------------------------------------------
+; Functions (load all files in defuns-dir)
+; Copied from https://github.com/magnars/.emacs.d/blob/master/init.el
+;----------------------------------------------------------------------------
+(setq defuns-dir (expand-file-name "~/.emacs.d/defuns"))
+(dolist (file (directory-files defuns-dir t "\\w+"))
+  (when (file-regular-p file)
+      (load file)))
+;----------------------------------------------------------------------------
 ; Load configs for specific features and modes
 ;----------------------------------------------------------------------------
 (require 'init-modeline)
@@ -73,7 +81,7 @@
 (require 'init-haskell)
 (require 'init-ruby-mode)
 (require 'init-rails)
-(require 'init-rcirc)
+;(require 'init-rcirc)
 
 (require 'init-lisp)
 (require 'init-slime)
@@ -89,7 +97,7 @@
 (require 'init-themes) ; color-themes 6.6.1 has some problem
 ;; Chinese inut method
 (require 'init-org2blog)
-(require 'init-fill-column-indicator)
+;; (require 'init-fill-column-indicator) ;make auto-complete dropdown wierd
 (require 'init-yasnippet)
 (require 'init-better-registers) ; C-x j - jump to register
 (require 'init-zencoding-mode) ;behind init-better-register to override C-j
@@ -115,6 +123,8 @@
 (require 'init-evil) ; use evil mode (vi key binding)
 (require 'init-misc)
 (require 'init-ctags)
+(require 'init-ace-jump-mode)
+(require 'init-multiple-cursors)
 ;;----------------------------------------------------------------------------
 ;; Allow access from emacsclient
 ;;----------------------------------------------------------------------------
