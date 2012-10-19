@@ -94,6 +94,11 @@
 (add-hook 'LaTeX-mode-hook 'turn-on-reftex)   ; with AUCTeX LaTeX mode
 (add-hook 'latex-mode-hook 'turn-on-reftex)   ; with Emacs latex mode
 
+;; Stop creating those backup~ files
+(setq make-backup-files nil)
+;; Stop creating those #autosave# files
+(setq auto-save-default nil)
+
 (require 'my-org-settings)
 
 (provide 'init-local)

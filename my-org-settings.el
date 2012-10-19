@@ -113,7 +113,7 @@
 
 \\setCJKmainfont{WenQuanYi Micro Hei} % 默认中文字体
 \\setCJKmonofont{WenQuanYi Micro Hei Mono} % 中文等宽字体
-\\setmainfont{TeXGyrePagella} % 英文衬线字体
+\\setmainfont{TeX Gyre Pagella} % 英文衬线字体
 \\setmonofont{Monaco} % 英文等宽字体
 \\setsansfont{Trebuchet MS} % 英文无衬线字体
 \\punctstyle{kaiming} % 开明式标点格式: 句末点号用全角, 其他半角
@@ -187,7 +187,7 @@
 
 \\setCJKmainfont{WenQuanYi Micro Hei} % 默认中文字体
 \\setCJKmonofont{WenQuanYi Micro Hei Mono} % 中文等宽字体
-\\setmainfont{TeXGyrePagella} % 英文衬线字体
+\\setmainfont{TeX Gyre Pagella} % 英文衬线字体
 \\setmonofont{Monaco} % 英文等宽字体
 \\setsansfont{Trebuchet MS} % 英文无衬线字体
 \\punctstyle{kaiming} % 开明式标点格式: 句末点号用全角, 其他半角

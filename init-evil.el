@@ -5,4 +5,5 @@
 (evil-set-initial-state 'org-mode 'emacs)
 (evil-set-initial-state 'inf-ruby-mode 'emacs)
 (evil-set-initial-state 'yari-mode 'emacs)
+(evil-set-initial-state 'artist-mode 'emacs)
 (provide 'init-evil)
