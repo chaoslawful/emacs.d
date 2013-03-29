@@ -76,6 +76,11 @@ ARCHIVE is the string name of the package archive.")
 
 (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/"))
 
+;; XXX: added by wxz
+(add-to-list 'package-archives '("ELPA" . "http://tromey.com/elpa/"))
+(add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/"))
+;; XXX: ends here
+
 (defvar melpa-exclude-packages
   '(slime)
   "Don't install Melpa versions of these packages.")
@@ -227,7 +232,7 @@ ARCHIVE is the string name of the package archive.")
 (require-package 'evil-leader '(20130316 1414 0) nil)
 (require-package 'evil-numbers '(20120712 1933 0) nil)
 (require-package 'w3m)
-(require-package 'sunrise-commander '(20130222 26 0) nil)
+(require-package 'sunrise-commander)
 (require-package 'idomenu)
 (require-package 'ctags)
 (require-package 'buffer-move)
