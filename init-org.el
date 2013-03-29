@@ -1,10 +1,15 @@
 (define-key global-map "\C-cl" 'org-store-link)
 (define-key global-map "\C-ca" 'org-agenda)
-(add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
+
+(if *is-a-mac*
+  ; make soffice visible when converting odt to doc
+  (setenv "PATH" (concat (getenv "PATH") "/Applications/LibreOffice.app/Contents/MacOS"))
+  )
 
 ;; Various preferences
 (setq org-log-done t
       org-completion-use-ido t
+      org-edit-src-content-indentation 0
       org-edit-timestamp-down-means-later t
       org-agenda-start-on-weekday nil
       org-agenda-span 14
@@ -12,8 +17,10 @@
       org-agenda-window-setup 'current-window
       org-fast-tag-selection-single-key 'expert
       org-export-kill-product-buffer-when-displayed t
+      org-export-odt-preferred-output-format "doc"
       org-tags-column 80
-      org-startup-indented t)
+      ;org-startup-indented t
+      )
 
 ; Refile targets include this file and any file contributing to the agenda - up to 5 levels deep
 (setq org-refile-targets (quote ((nil :maxlevel . 5) (org-agenda-files :maxlevel . 5))))
@@ -33,8 +40,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Save the running clock and all clock history when exiting Emacs, load it on startup
-(setq org-clock-persistence-insinuate t)
-(setq org-clock-persist t)
+;; @see http://orgmode.org/manual/Clocking-work-time.html
+(org-clock-persistence-insinuate)
+(setq org-clock-persist 'history)
 (setq org-clock-in-resume t)
 
 ;; Change task state to STARTED when clocking in
@@ -98,7 +106,6 @@
       (require 'org-fstree)
       (setq org-ditaa-jar-path (format "%s%s" (if *cygwin* "c:/cygwin" "")
                                        (expand-file-name "~/.emacs.d/elpa/contrib/scripts/ditaa.jar")) )
-      (add-hook 'org-mode-hook 'soft-wrap-lines)
       (defun soft-wrap-lines ()
         "Make lines wrap at window edge and on word boundary,
         in current buffer."
@@ -106,8 +113,20 @@
         (setq truncate-lines nil)
         (setq word-wrap t)
         )
-        ))
+      (add-hook 'org-mode-hook '(lambda ()
+                                  (soft-wrap-lines)
+                                  (inhibit-autopair)
+                                  ))))
 
-(add-hook 'org-mode-hook 'inhibit-autopair)
+(defadvice org-open-at-point (around org-open-at-point-choose-browser activate)
+  (let ((browse-url-browser-function
+         (cond ((equal (ad-get-arg 0) '(4))
+                'browse-url-generic)
+               ((equal (ad-get-arg 0) '(16))
+                'choose-browser)
+               (t
+                (lambda (url &optional new)
+                  (w3m-browse-url url t))))))
+    ad-do-it))
 
 (provide 'init-org)

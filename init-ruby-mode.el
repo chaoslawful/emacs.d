@@ -1,8 +1,7 @@
-;; Currently loading ruby-mode and inf-ruby from the version bundled with rinari
-(setq interpreter-mode-alist
-      (cons '("ruby" . ruby-mode) interpreter-mode-alist))
+(eval-after-load 'rinari
+  '(diminish 'rinari-minor-mode "Rin"))
 
-(add-auto-mode 'ruby-mode "\\.rb$" "Rakefile$" "\.rake$" "\.rxml$" "\.rjs$" ".irbrc$" "\.builder$" "\.ru$" "\.gemspec$" "Gemfile$")
+(add-auto-mode 'ruby-mode "\\.rb\\'" "Rakefile\\'" "\.rake\\'" "\.rxml\\'" "\.rjs\\'" ".irbrc\\'" "\.builder\\'" "\.ru\\'" "\.gemspec\\'" "Gemfile\\'")
 
 
 (autoload 'run-ruby "inf-ruby" "Run an inferior Ruby process")
@@ -12,7 +11,9 @@
 (eval-after-load 'ruby-mode
   '(progn
      (define-key ruby-mode-map (kbd "RET") 'reindent-then-newline-and-indent)
-     (define-key ruby-mode-map (kbd "TAB") 'indent-for-tab-command)))
+     (define-key ruby-mode-map (kbd "TAB") 'indent-for-tab-command)
+     (setq compile-command "rake ")
+     ))
 
 
 ;;----------------------------------------------------------------------------
@@ -22,10 +23,17 @@
 
 
 ;;----------------------------------------------------------------------------
+;; Ruby - robe
+;;----------------------------------------------------------------------------
+(add-hook 'ruby-mode-hook 'robe-mode)
+(add-hook 'robe-mode-hook
+          (lambda ()
+            (add-to-list 'ac-sources 'ac-source-robe)
+            (setq completion-at-point-functions '(auto-complete))))
+
+;;----------------------------------------------------------------------------
 ;; Ruby - misc
 ;;----------------------------------------------------------------------------
-(setq compile-command "rake ")
-
 (defalias 'ri 'yari)
 
 
@@ -44,22 +52,22 @@
 
 (mmm-add-mode-ext-class 'html-erb-mode "\\.jst\\.ejs\\'" 'ejs)
 
-(add-to-list 'auto-mode-alist '("\\.r?html\\(\\.erb\\)?\\'" . html-erb-mode))
+(add-to-list 'auto-mode-alist '("\\.rhtml\\(\\.erb\\)?\\'" . html-erb-mode))
 (add-to-list 'auto-mode-alist '("\\.jst\\.ejs\\'"  . html-erb-mode))
-(mmm-add-mode-ext-class 'yaml-mode "\\.yaml$" 'erb)
+(mmm-add-mode-ext-class 'yaml-mode "\\.yaml\\'" 'erb)
 
-(dolist (mode (list 'js-mode 'js2-mode 'js3-mode))
-  (mmm-add-mode-ext-class mode "\\.js\\.erb$" 'erb))
+(dolist (mode (list 'js-mode 'js2-mode))
+  (mmm-add-mode-ext-class mode "\\.js\\.erb\\'" 'erb))
 
 
 ;;----------------------------------------------------------------------------
 ;; Ruby - my convention for heredocs containing SQL
 ;;----------------------------------------------------------------------------
-(eval-after-load 'mmm-mode
-  '(progn
-     (mmm-add-classes
-      '((ruby-heredoc-sql :submode sql-mode :front "<<-?end_sql.*\r?\n" :back "[ \t]*end_sql" :face mmm-code-submode-face)))
-     (mmm-add-mode-ext-class 'ruby-mode "\\.rb$" 'ruby-heredoc-sql)))
+;; (eval-after-load 'mmm-mode
+;;   '(progn
+;;      (mmm-add-classes
+;;       '((ruby-heredoc-sql :submode sql-mode :front "<<-?end_sql.*\r?\n" :back "[ \t]*end_sql" :face mmm-code-submode-face)))
+;;      (mmm-add-mode-ext-class 'ruby-mode "\\.rb\\'" 'ruby-heredoc-sql)))
 
 
 ;;----------------------------------------------------------------------------
@@ -72,14 +80,6 @@
 (add-hook 'ruby-mode-hook (lambda () (local-set-key [f7] 'ruby-compilation-this-test)))
 
 (add-hook 'ruby-mode-hook (lambda () (local-set-key [f6] 'recompile)))
-
-
-
-;;----------------------------------------------------------------------------
-;; Yaml
-;;----------------------------------------------------------------------------
-(autoload 'yaml-mode "yaml-mode" "Major mode for YAML source")
-(add-auto-mode 'yaml-mode "\\.ya?ml$")
 
 
 (provide 'init-ruby-mode)

@@ -1,4 +1,7 @@
 (autoload 'slime-fuzzy-init "slime-fuzzy" "" nil)
+;; I use sbcl, `C-h v slime-read-interactive-args RET` for details
+;; you need install the program sbcl, of course
+(setq slime-default-lisp 'sbcl)
 (eval-after-load 'slime-fuzzy
   '(require 'slime-repl))
 
@@ -15,9 +18,6 @@
      (slime-setup '(slime-repl slime-fuzzy))
      (setq slime-complete-symbol*-fancy t)
      (setq slime-complete-symbol-function 'slime-fuzzy-complete-symbol)
-
-     (dolist (hook '(sldb-mode-hook slime-repl-mode-hook))
-       (add-hook hook 'inhibit-autopair))
 
      ;; Stop SLIME's REPL from grabbing DEL, which is annoying when backspacing over a '('
      (defun override-slime-repl-bindings-with-paredit ()

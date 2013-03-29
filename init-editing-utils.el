@@ -1,3 +1,5 @@
+;; Use evil-mode (strongly recommended) will make this file much smaller!
+
 ;;----------------------------------------------------------------------------
 ;; Some basic preferences
 ;;----------------------------------------------------------------------------
@@ -14,17 +16,25 @@
  grep-scroll-output t
  indent-tabs-mode nil
  line-spacing 0.2
- make-backup-files nil
  mouse-yank-at-point t
  set-mark-command-repeat-pop t
- show-trailing-whitespace t
  tooltip-delay 1.5
  truncate-lines nil
  truncate-partial-width-windows nil
+ ;; no annoying beep on errors
  visible-bell t)
+
+(global-auto-revert-mode)
+(setq global-auto-revert-non-file-buffers t
+      auto-revert-verbose nil)
+
+;; But don't show trailing whitespace in SQLi, inf-ruby etc.
+(add-hook 'comint-mode-hook
+          (lambda () (setq show-trailing-whitespace nil)))
 
 (transient-mark-mode t)
 
+(define-key global-map (kbd "RET") 'newline-and-indent)
 
 ;;----------------------------------------------------------------------------
 ;; Zap *up* to char is a more sensible default
@@ -48,9 +58,10 @@
 ;;----------------------------------------------------------------------------
 ;; Autopair quotes and parentheses
 ;;----------------------------------------------------------------------------
-(require 'autopair)
-(setq autopair-autowrap t)
-(autopair-global-mode t)
+(add-hook 'prog-mode-hook (lambda ()
+                            (setq autopair-autowrap t)
+                            (autopair-global-mode t)
+                            ))
 
 (defun inhibit-autopair ()
   "Prevent autopair from enabling in the current buffer."
@@ -62,91 +73,24 @@
 ;;----------------------------------------------------------------------------
 (global-pointback-mode)
 
-
-;;----------------------------------------------------------------------------
-;; Don't disable case-change functions
-;;----------------------------------------------------------------------------
-(put 'upcase-region 'disabled nil)
-(put 'downcase-region 'disabled nil)
-
-
-;;----------------------------------------------------------------------------
-;; Rectangle selections, and overwrite text when the selection is active
-;;----------------------------------------------------------------------------
-(cua-selection-mode t)                  ; for rectangles, CUA is nice
-
-
 ;;----------------------------------------------------------------------------
 ;; Handy key bindings
 ;;----------------------------------------------------------------------------
 ;; To be able to M-x without meta
 (global-set-key (kbd "C-x C-m") 'execute-extended-command)
 
-;; Vimmy alternatives to M-^ and C-u M-^
-(global-set-key (kbd "C-c j") 'join-line)
-(global-set-key (kbd "C-c J") (lambda () (interactive) (join-line 1)))
-
-(global-set-key (kbd "M-T") 'transpose-lines)
 (global-set-key (kbd "C-.") 'set-mark-command)
 (global-set-key (kbd "C-x C-.") 'pop-global-mark)
 
-
-;; multiple-cursors
-(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
-(global-set-key (kbd "C->") 'mc/mark-next-like-this)
-(global-set-key (kbd "C-+") 'mc/mark-next-like-this)
-(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
-;; From active region to multiple cursors:
-(global-set-key (kbd "C-c c r") 'set-rectangular-region-anchor)
-(global-set-key (kbd "C-c c c") 'mc/edit-lines)
-(global-set-key (kbd "C-c c e") 'mc/edit-ends-of-lines)
-(global-set-key (kbd "C-c c a") 'mc/edit-beginnings-of-lines)
-
-(defun duplicate-line ()
-  (interactive)
-  (save-excursion
-    (let ((line-text (buffer-substring-no-properties
-                      (line-beginning-position)
-                      (line-end-position))))
-      (move-end-of-line 1)
-      (newline)
-      (insert line-text))))
-
-(global-set-key (kbd "C-c p") 'duplicate-line)
-
-;; Train myself to use M-f and M-b instead
-(global-unset-key [M-left])
-(global-unset-key [M-right])
-
-(defun kill-back-to-indentation ()
-  "Kill from point back to the first non-whitespace character on the line."
-  (interactive)
-  (let ((prev-pos (point)))
-    (back-to-indentation)
-    (kill-region (point) prev-pos)))
-
-(global-set-key (kbd "C-M-<backspace>") 'kill-back-to-indentation)
-
+;;----------------------------------------------------------------------------
+;; Page break lines
+;;----------------------------------------------------------------------------
+(global-page-break-lines-mode)
 
 ;;----------------------------------------------------------------------------
 ;; Shift lines up and down with M-up and M-down
 ;;----------------------------------------------------------------------------
 (move-text-default-bindings)
-
-
-;;----------------------------------------------------------------------------
-;; Fix backward-up-list to understand quotes, see http://bit.ly/h7mdIL
-;;----------------------------------------------------------------------------
-(defun backward-up-sexp (arg)
-  (interactive "p")
-  (let ((ppss (syntax-ppss)))
-    (cond ((elt ppss 3)
-           (goto-char (elt ppss 8))
-           (backward-up-sexp (1- arg)))
-          ((backward-up-list arg)))))
-
-(global-set-key [remap backward-up-list] 'backward-up-sexp) ; C-M-u, C-M-up
-
 
 ;;----------------------------------------------------------------------------
 ;; Cut/copy the current line if no region is active
@@ -173,7 +117,6 @@
 
 (suspend-mode-during-cua-rect-selection 'whole-line-or-region-mode)
 
-
 ;;----------------------------------------------------------------------------
 ;; Random line sorting
 ;;----------------------------------------------------------------------------
@@ -189,65 +132,33 @@
         (sort-subr nil 'forward-line 'end-of-line nil nil
                    (lambda (s1 s2) (eq (random 2) 0)))))))
 
-;; copy word, check function mark-sexp
-; @see http://www.emacswiki.org/emacs/CopyWithoutSelection
-;; http://emacser.com/torture-emacs.htm
-(defun qiang-comment-dwim-line (&optional arg)
-  "Replacement for the comment-dwim command.
-  If no region is selected and current line is not blank and we are not at the
-  end of the line, then comment current line.  Replaces default behaviour of
-  comment-dwim, when it inserts comment at the end of the line."
-  (interactive "*P")
-  (comment-normalize-vars)
-  (if (and (not (region-active-p)) (not (looking-at "[ \t]*$")))
-    (comment-or-uncomment-region
-     (line-beginning-position) (line-end-position))
-    (comment-dwim arg)))
-(global-set-key "\M-;" 'qiang-comment-dwim-line)
-
-;; line copy, if no region active, it simply copy the current whole line
-(defadvice kill-line (before check-position activate)
-  (if (member major-mode
-              '(emacs-lisp-mode scheme-mode lisp-mode
-                                c-mode c++-mode objc-mode js-mode
-                                latex-mode plain-tex-mode))
-      (if (and (eolp) (not (bolp)))
-          (progn (forward-char 1)
-                 (just-one-space 0)
-                 (backward-char 1)))))
-
-(defadvice kill-ring-save (before slick-copy activate compile)
-  "When called with no active region,copy a single line instead."
-  (interactive (if mark-active (list (region-beginning) (region-end))
-                 (message "Copied line")
-                 (list (line-beginning-position)
-                       (line-beginning-position 2)))))
-
-(defadvice kill-region (before slick-cut activate compile)
-  "When called with no active region, kill a single line instead."
-  (interactive
-   (if mark-active (list (region-beginning) (region-end))
-     (list (line-beginning-position)
-           (line-beginning-position 2)))))
-
-;; Copy line from point to the end, exclude the line break
-(defun qiang-copy-line (arg)
-  "Copy lines (as many as prefix argument) in the kill ring"
-  (interactive "p")
-  (kill-ring-save (point)
-                  (line-end-position))
-  (message "%d line%s copied" arg (if (= 1 arg) "" "s")))
-(global-set-key (kbd "M-k") 'qiang-copy-line)
-
 ;need install browse-kill-ring
 (browse-kill-ring-default-keybindings)
 
-; turns on auto-fill-mode, don't use text-mode-hook becasue for some
-; mode (org-mode for example), this will make the exported document 
-; ugly!
+;; show trailing spaces in a programming mod
+(add-hook 'prog-mode-hook (lambda () (setq show-trailing-whitespace t)))
+
+;; turns on auto-fill-mode, don't use text-mode-hook becasue for some
+;; mode (org-mode for example), this will make the exported document
+;; ugly!
 (add-hook 'markdown-mode-hook 'turn-on-auto-fill)
 (add-hook 'change-log-mode-hook 'turn-on-auto-fill)
 (add-hook 'cc-mode-hook 'turn-on-auto-fill)
 (global-set-key (kbd "C-c q") 'auto-fill-mode)
 
+;; some project prefer tab, so be it
+;; @see http://stackoverflow.com/questions/69934/set-4-space-indent-in-emacs-in-text-mode
+(setq-default tab-width 4)
+(defun toggle-indent-tab ()
+  (interactive)
+  (if indent-tabs-mode
+      (progn
+        (setq indent-tabs-mode nil)
+        )
+    (progn
+        (setq indent-tabs-mode t)
+        (setq indent-line-function 'insert-tab)
+      )
+      )
+  )
 (provide 'init-editing-utils)

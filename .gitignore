@@ -1,3 +1,4 @@
+.wg-file.el
 /url/cache
 /.emacs.desktop
 /auto-save-list
@@ -21,7 +22,6 @@ cookies
 /ac-comphist.dat
 \#*
 /elpa
-site-lisp/package/
 eshell/
 semanticdb/
 *.swp
@@ -30,4 +30,9 @@ abbrev_defs
 /swank
 abbrev_defs
 /.mc-lists.el
-
+TAGS
+GTAGS
+GPATH
+GRTAGS
+emms/
+/var

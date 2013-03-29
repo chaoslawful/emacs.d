@@ -17,6 +17,7 @@
 (setq *linux-x* (and window-system *linux*) )
 (setq *xemacs* (featurep 'xemacs) )
 (setq *emacs23* (and (not *xemacs*) (or (>= emacs-major-version 23))) )
+(setq *emacs24* (and (not *xemacs*) (or (>= emacs-major-version 24))) )
 
 ;----------------------------------------------------------------------------
 ; Functions (load all files in defuns-dir)
@@ -37,6 +38,15 @@
 (require 'init-compat)
 (require 'init-utils)
 (require 'init-site-lisp) ;; Must come before elpa, as it may provide package.el
+
+;; win32 auto configuration, assuming that cygwin is installed at "c:/cygwin"
+(if *win32*
+	(progn
+		(setq cygwin-mount-cygwin-bin-directory "c:/cygwin/bin")
+		(require 'setup-cygwin)
+		;(setenv "HOME" "c:/cygwin/home/someuser") ;; better to set HOME env in GUI
+		))
+
 (require 'init-elpa)
 (require 'init-exec-path) ;; Set up $PATH
 (require 'init-frame-hooks)
@@ -53,18 +63,15 @@
 (require 'init-artbollocks-mode)
 (require 'init-recentf)
 (require 'init-ido)
+(if *emacs24* (require 'init-helm))
 (require 'init-hippie-expand)
 (require 'init-windows)
 (require 'init-sessions)
 (require 'init-fonts)
 (require 'init-mmm)
 ;(require 'init-growl)
-
 (require 'init-editing-utils)
-
-(require 'init-darcs)
 (require 'init-git)
-
 (require 'init-crontab)
 (require 'init-textile)
 (require 'init-markdown)
@@ -74,13 +81,14 @@
 (require 'init-sh)
 (require 'init-php)
 (require 'init-org)
+(require 'init-org-mime)
 (require 'init-nxml)
 (require 'init-css)
 (require 'init-haml)
 (require 'init-python-mode)
 (require 'init-haskell)
 (require 'init-ruby-mode)
-(require 'init-rails)
+(if (not (boundp 'light-weight-emacs)) (require 'init-rails))
 ;(require 'init-rcirc)
 
 (require 'init-lisp)
@@ -98,11 +106,11 @@
 ;; Chinese inut method
 (require 'init-org2blog)
 ;; (require 'init-fill-column-indicator) ;make auto-complete dropdown wierd
-(require 'init-yasnippet)
-(require 'init-better-registers) ; C-x j - jump to register
+(if (not (boundp 'light-weight-emacs)) (require 'init-yasnippet))
+;; Use bookmark instead
+;; (require 'init-better-registers) ; C-x j - jump to register
 (require 'init-zencoding-mode) ;behind init-better-register to override C-j
 (require 'init-yari)
-;(require 'init-etags-select)
 (require 'init-cc-mode)
 (require 'init-auto-complete) ; after init-yasnippeta to override TAB
 (require 'init-semantic)
@@ -111,44 +119,64 @@
 (require 'init-linum-mode)
 ;(require 'init-delicious) ;make startup slow, I don't use delicious in w3m
 (require 'init-emacs-w3m)
-(require 'init-eim)
+(if (not (boundp 'light-weight-emacs)) (require 'init-eim))
 (require 'init-thing-edit)
 (require 'init-which-func)
 (require 'init-keyfreq)
-(require 'init-gist)
+;; (require 'init-gist)
 (require 'init-emacspeak)
 (require 'init-pomodoro)
 (require 'init-undo-tree)
 (require 'init-moz)
-(require 'init-evil) ; use evil mode (vi key binding)
+(require 'init-gtags)
+;; use evil mode (vi key binding)
+(if (not (boundp 'light-weight-emacs)) (require 'init-evil))
 (require 'init-misc)
 (require 'init-ctags)
 (require 'init-ace-jump-mode)
 (require 'init-multiple-cursors)
+;; (require 'init-uml)
+(require 'init-sunrise-commander)
+(require 'init-bbdb)
+(require 'init-gnus)
+(require 'init-smarter-compile)
+(require 'init-twittering-mode)
+(require 'init-weibo)
+;; itune cannot play flac, so I use mplayer+emms instead (updated, use mpd!)
+(if (not (boundp 'light-weight-emacs)) (if *is-a-mac* (require 'init-emms)) )
+(require 'init-lua-mode)
+(require 'init-doxygen)
+(require 'init-workgroups)
+(require 'init-move-window-buffer)
+(require 'init-term-mode)
+(require 'init-web-mode)
+(require 'init-sr-speedbar)
+
 ;;----------------------------------------------------------------------------
 ;; Allow access from emacsclient
 ;;----------------------------------------------------------------------------
-(defconst --batch-mode (member "--batch-mode" command-line-args)
-          "True when running in batch-mode (--batch-mode command-line switch set).")
-
-(unless --batch-mode
-  (require 'server)
-  (when (and (= emacs-major-version 23)
-             (= emacs-minor-version 1)
-             (equal window-system 'w32))
-    ;; Suppress error "directory ~/.emacs.d/server is unsafe" on Windows.
-    (defun server-ensure-safe-dir (dir) "Noop" t))
-  (condition-case nil
-      (unless (server-running-p) (server-start))
-    (remove-hook 'kill-buffer-query-functions 'server-kill-buffer-query-function)
-    (error
-     (let* ((server-dir (if server-use-tcp server-auth-dir server-socket-dir)))
-       (when (and server-use-tcp
-                  (not (file-accessible-directory-p server-dir)))
-         (display-warning
-          'server (format "Creating %S" server-dir) :warning)
-         (make-directory server-dir t)
-         (server-start))))))
+;; Don't use emacsclient, and this code make emacs start up slow
+;;(defconst --batch-mode (member "--batch-mode" command-line-args)
+;;          "True when running in batch-mode (--batch-mode command-line switch set).")
+;;
+;;(unless --batch-mode
+;;  (require 'server)
+;;  (when (and (= emacs-major-version 23)
+;;             (= emacs-minor-version 1)
+;;             (equal window-system 'w32))
+;;    ;; Suppress error "directory ~/.emacs.d/server is unsafe" on Windows.
+;;    (defun server-ensure-safe-dir (dir) "Noop" t))
+;;  (condition-case nil
+;;      (unless (server-running-p) (server-start))
+;;    (remove-hook 'kill-buffer-query-functions 'server-kill-buffer-query-function)
+;;    (error
+;;     (let* ((server-dir (if server-use-tcp server-auth-dir server-socket-dir)))
+;;       (when (and server-use-tcp
+;;                  (not (file-accessible-directory-p server-dir)))
+;;         (display-warning
+;;          'server (format "Creating %S" server-dir) :warning)
+;;         (make-directory server-dir t)
+;;         (server-start))))))
 
 ;;----------------------------------------------------------------------------
 ;; Variables configured via the interactive 'customize' interface
@@ -174,6 +202,19 @@
     (time-to-seconds (time-since emacs-load-start-time)))
    )
 
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(bmkp-last-as-first-bookmark-file "~/.emacs.d/.bookmarks.el")
+ '(session-use-package t nil (session)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(window-numbering-face ((t (:foreground "DeepPink" :underline "DeepPink" :weight bold))) t))
 ;;; Local Variables:
 ;;; no-byte-compile: t
 ;;; End:
