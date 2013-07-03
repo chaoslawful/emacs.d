@@ -8,24 +8,30 @@
         (find-tag . helm-completing-read-with-cands-in-buffer)
         (ffap-alternate-file . nil)
         (tmm-menubar . nil)
-        (dired-do-copy . ido)
-        (dired-do-rename . ido)
+        (dired-do-copy . nil)
+        (dired-do-rename . nil)
         (dired-create-directory . nil)
         (find-file . ido)
+        (copy-file-and-rename-buffer . nil)
+        (rename-file-and-buffer . nil)
+        (w3m-goto-url . nil)
         (ido-find-file . nil)
+        (ido-edit-input . nil)
+        (read-file-name . ni)
         (yas/compile-directory . ido)
         (yas-compile-directory . ido)
         ))
 
-;; helm-gtags ==begin
+;; {{helm-gtags
 ;; customize
 (setq helm-c-gtags-path-style 'relative)
 (setq helm-c-gtags-ignore-case t)
 (setq helm-c-gtags-read-only t)
-;; helm-gtags ==end
+(add-hook 'c-mode-hook (lambda () (helm-gtags-mode)))
+(add-hook 'c++-mode-hook (lambda () (helm-gtags-mode)))
+;; }}
 
 
-(add-hook 'c-mode-common-hook (lambda () (helm-gtags-mode)))
 
 ;; key bindings
 (add-hook 'helm-gtags-mode-hook

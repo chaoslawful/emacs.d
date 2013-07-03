@@ -9,10 +9,6 @@
 ;; json
 (setq auto-mode-alist (cons '("\\.json\\'" . json-mode) auto-mode-alist))
 
-;; On-the-fly syntax checking
-(eval-after-load 'js
-  '(add-hook 'js-mode-hook 'flymake-jslint-load))
-
 ;; js2-mode
 (add-hook 'js2-mode-hook '(lambda ()
                             (setq mode-name "JS2")
@@ -46,7 +42,7 @@
 
 
 (eval-after-load 'coffee-mode
-  `(setq coffee-js-mode js2-mode
+  `(setq coffee-js-mode 'js2-mode
          coffee-tab-width preferred-javascript-indent-level))
 
 (add-hook 'coffee-mode-hook 'flymake-coffee-load)

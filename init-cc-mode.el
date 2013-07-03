@@ -96,13 +96,16 @@
   (gtags-mode 1)
 
   (require 'fic-mode)
-  (add-hook 'c++-mode-hook 'turn-on-fic-mode) 
+  (add-hook 'c++-mode-hook 'turn-on-fic-mode)
 
   ; @see https://github.com/seanfisk/cmake-flymake
   ; make sure you project use cmake
   (flymake-mode)
+  (cppcm-reload-all)
 
   )
-(add-hook 'c-mode-common-hook 'my-c-mode-hook)
+;; donot use c-mode-common-hook or cc-mode-hook because many major-modes use this hook
+(add-hook 'c-mode-hook 'my-c-mode-hook)
+(add-hook 'c++-mode-hook 'my-c-mode-hook)
 
 (provide 'init-cc-mode)
