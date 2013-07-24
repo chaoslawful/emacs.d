@@ -7,8 +7,6 @@
 ;; Remap org-mode meta keys for convenience
 (evil-declare-key 'normal org-mode-map
     "gh" 'outline-up-heading
-    "gj" 'org-forward-same-level
-    "gk" 'org-backward-same-level
     "gl" 'outline-next-visible-heading
     "H" 'org-beginning-of-line ; smarter behaviour on headlines etc.
     "L" 'org-end-of-line ; smarter behaviour on headlines etc.
@@ -61,9 +59,12 @@
         (dired-mode . emacs)
         (compilation-mode . emacs)
         (speedbar-mode . emacs)
+        (magit-commit-mode . normal)
         )
       do (evil-set-initial-state mode state))
 
+(define-key evil-ex-completion-map (kbd "M-p") 'previous-complete-history-element)
+(define-key evil-ex-completion-map (kbd "M-n") 'next-complete-history-element)
 
 (define-key evil-normal-state-map "Y" (kbd "y$"))
 (define-key evil-normal-state-map "+" 'evil-numbers/inc-at-pt)
@@ -112,7 +113,7 @@ to replace the symbol under cursor"
   "px" 'paste-from-x-clipboard
   "ci" 'evilnc-comment-or-uncomment-lines
   "cl" 'evilnc-comment-or-uncomment-to-the-line
-  "cc" 'copy-and-comment-region
+  "cc" 'evilnc-copy-and-comment-lines
   "ct" 'ctags-create-or-update-tags-table
   "cs" 'evilcvn-change-symbol-in-defun
   "t" 'ido-goto-symbol ;; same as my vim hotkey
@@ -129,9 +130,9 @@ to replace the symbol under cursor"
   "mq" '(lambda () (interactive) (man (concat "-k " (thing-at-point 'symbol))))
   "gg" '(lambda () (interactive) (w3m-search "g" (thing-at-point 'symbol)))
   "q" '(lambda () (interactive) (w3m-search "q" (thing-at-point 'symbol)))
-  "so" 'delete-other-windows
-  "sh" 'split-window-below
-  "sv" 'split-window-right
+  "s1" 'delete-other-windows
+  "s2" 'split-window-below
+  "s3" 'split-window-right
   "su" 'winner-undo
   "hs" 'w3mext-hacker-search
   "gf" 'gtags-find-tag-from-here
@@ -148,6 +149,9 @@ to replace the symbol under cursor"
   "rw" 'rotate-windows
   "l" 'align-regexp
   "x" 'er/expand-region
+  "vd" 'scroll-other-window
+  "vu" '(lambda () (interactive) (scroll-other-window-down nil))
+  "jj" 'w3mext-search-js-api-mdn
   )
 ;; }}
 
@@ -163,13 +167,6 @@ to replace the symbol under cursor"
                                  (t default-color))))
                 (set-face-background 'mode-line (car color))
                 (set-face-foreground 'mode-line (cdr color))))))
-
-;; the only purpose I use key-chord is avoid typing esc in evil-mode
-(key-chord-mode 1)
-(key-chord-define evil-normal-state-map ",," 'evil-force-normal-state)
-(key-chord-define evil-visual-state-map ",," 'evil-change-to-previous-state)
-(key-chord-define evil-insert-state-map ",," 'evil-normal-state)
-(key-chord-define evil-replace-state-map ",," 'evil-normal-state)
 
 ;; comment/uncomment lines
 (evilnc-default-hotkeys)

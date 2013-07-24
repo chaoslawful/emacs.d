@@ -163,9 +163,30 @@
 ;; Use the system clipboard
 (setq x-select-enable-clipboard t)
 
-;; shortcut 'ctx', if smex installed
-;; you need install xsel
-;; xclip has some problem when copying
+;; you need install xsel under Linux
+;; xclip has some problem when copying under Linux
+(defun copy-yank-str (msg)
+  (kill-new msg)
+  (with-temp-buffer
+    (insert msg)
+    (shell-command-on-region (point-min) (point-max)
+                             (cond
+                              ((eq system-type 'cygwin) "putclip")
+                              ((eq system-type 'darwin) "pbcopy")
+                              (t "xsel -ib")
+                              ))))
+
+(defun copy-full-path-of-current-buffer ()
+  "copy full path into the yank ring and OS clipboard"
+  (interactive)
+  (when buffer-file-name
+    (kill-new (file-truename buffer-file-name))
+    (copy-yank-str (file-truename buffer-file-name))
+    (message "full path of current buffer => clipboard & yank ring")
+    ))
+
+(global-set-key (kbd "C-x v f") 'copy-full-path-of-current-buffer)
+
 (defun copy-to-x-clipboard ()
   (interactive)
   (if (region-active-p)
@@ -290,38 +311,6 @@ Current position is preserved."
 ;; enable for all programming modes
 ;; http://emacsredux.com/blog/2013/04/21/camelcase-aware-editing/
 (add-hook 'prog-mode-hook 'subword-mode)
-
-(defun copy-and-comment-region (beg end)
-  "Insert a copy of the lines in region and comment them.
-When transient-mark-mode is enabled, if no region is active then only the
-current line is acted upon.
-
-If the region begins or ends in the middle of a line, that entire line is
-copied, even if the region is narrowed to the middle of a line.
-The copied lines are commented according to mode.
-
-Current position is preserved."
-  (interactive "r")
-  (let ((orig-pos (point-marker)))
-  (save-restriction
-    (widen)
-    (when (and transient-mark-mode (not (use-region-p)))
-      (setq beg (line-beginning-position)
-            end (line-beginning-position 2)))
-
-    (goto-char beg)
-    (setq beg (line-beginning-position))
-    (goto-char end)
-    (unless (= (point) (line-beginning-position))
-      (setq end (line-beginning-position 2)))
-
-    (goto-char beg)
-    (insert-before-markers (buffer-substring-no-properties beg end))
-    (comment-region beg end)
-    (goto-char orig-pos))))
-
-;; (global-set-key (kbd "C-c c") 'copy-and-comment-region)
-(global-set-key (kbd "C-c c") 'copy-and-comment-region)
 
 ;; { smarter navigation to the beginning of a line
 ;; http://emacsredux.com/blog/2013/05/22/smarter-navigation-to-the-beginning-of-a-line/

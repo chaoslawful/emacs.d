@@ -101,8 +101,6 @@
 
 (require 'init-marmalade)
 
-;; Finally set up themes, after most possibly-customised faces have been defined
-(require 'init-themes) ; color-themes 6.6.1 has some problem
 ;; Chinese inut method
 (require 'init-org2blog)
 ;;(require 'init-fill-column-indicator) ;make auto-complete dropdown wierd
@@ -112,7 +110,6 @@
 (require 'init-zencoding-mode) ;behind init-better-register to override C-j
 (require 'init-yari)
 (require 'init-cc-mode)
-;; (require 'init-auto-complete) ; after init-yasnippeta to override TAB
 (require 'init-semantic)
 (require 'init-cmake-mode)
 (require 'init-csharp-mode)
@@ -151,6 +148,8 @@
 (require 'init-web-mode)
 (require 'init-sr-speedbar)
 (require 'init-smartparens)
+;; Choose either auto-complete or company-mode by commenting one of below two lines!
+;; (require 'init-auto-complete) ; after init-yasnippeta to override TAB
 (require 'init-company)
 (require 'init-stripe-buffer)
 (require 'init-popwin)
@@ -198,7 +197,7 @@
 ;;----------------------------------------------------------------------------
 ;; Locales (setting them earlier in this file doesn't work in X)
 ;;----------------------------------------------------------------------------
-(require 'init-locales) ;does not work in cygwin
+;(require 'init-locales) ;does not work in cygwin
 
 
 (when (require 'time-date nil t)
