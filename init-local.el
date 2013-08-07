@@ -102,6 +102,7 @@
 (setq auto-save-default nil)
 
 ;; org2blog settings
+;; Wordpress 需要安装 SyntaxHiglighter Evolved 插件才能正常进行语法高亮
 (setq org2blog/wp-blog-alist
       '(("混沌猫的窝"
          :url "http://chaoslawful.info/xmlrpc.php"
