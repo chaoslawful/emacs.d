@@ -101,6 +101,17 @@
 ;; Stop creating those #autosave# files
 (setq auto-save-default nil)
 
+;; org2blog settings
+(setq org2blog/wp-blog-alist
+      '(("混沌猫的窝"
+         :url "http://chaoslawful.info/xmlrpc.php"
+         :username "chaoslawful"
+         :default-title ""
+         :default-categories ("Misc")
+         :tags-as-categories nil
+         )
+        ))
+
 (require 'my-org-settings)
 
 (provide 'init-local)
