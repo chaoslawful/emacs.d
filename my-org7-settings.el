@@ -29,10 +29,10 @@
 (setq org-startup-indented t)
 
 ;; 用 listing 宏包格式化代码
-(setq org-latex-listings t)
+(setq org-export-latex-listings t)
 
 ;; Options for \lset
-(setq org-latex-listings-options
+(setq org-export-latex-listings-options
       '(("basicstyle" "\\color{foreground}\\tiny\\mono") ; 源代码字体样式
         ("keywordstyle" "\\color{function}\\bfseries\\tiny\\mono") ; 关键词字体样式
         ("identifierstyle" "\\color{doc}\\tiny\\mono")
@@ -60,7 +60,7 @@
         ))
 
 ;; 执行两遍 xelatex 生成 PDF，以便正常产生含中文的目录
-(setq org-latex-pdf-process
+(setq org-latex-to-pdf-process
       '("xelatex -interaction=nonstopmode %f"
         "xelatex -interaction=nonstopmode %f"))
 
@@ -87,10 +87,10 @@
 (setq org-agenda-window-setup 'current-window)
 
 ;; ditaa path 可考虑换成 DitaaEps
-(setq org-ditaa-jar-path "/usr/share/ditaa/ditaa.jar")
+(setq org-ditaa-jar-path "/usr/share/java/ditaa/ditaa-0_9.jar")
 
 ;; PlantUML path
-(setq org-plantuml-jar-path "/usr/share/plantuml/plantuml.jar")
+(setq org-plantuml-jar-path "/opt/plantuml/plantuml.jar")
 
 ;; 加载各种语言的支持Babel
 (org-babel-do-load-languages 'org-babel-load-languages
@@ -117,12 +117,12 @@
                                (lilypond . t)))
 
 ;; LaTeX export
-(unless (boundp 'org-latex-classes)
-  (setq org-latex-classes nil))
+(unless (boundp 'org-export-latex-classes)
+  (setq org-export-latex-classes nil))
 
 ;; For export org documents to the LaTex 'article', using
-;; XeTeX and some fancy fonts; requires XeTeX (see org-latex-pdf-process)
-(add-to-list 'org-latex-classes
+;; XeTeX and some fancy fonts; requires XeTeX (see org-latex-to-pdf-process)
+(add-to-list 'org-export-latex-classes
              '("article"
                "\\documentclass[12pt, a4paper]{article}
 \\usepackage{fontspec, xunicode, xltxtra}
@@ -193,7 +193,7 @@
 
 ;; allow for export to beamer by placing
 ;; #+LaTeX_CLASS: beamer in org files
-(add-to-list 'org-latex-classes
+(add-to-list 'org-export-latex-classes
              '("beamer"
                "\\documentclass[11pt, professionalfonts, nofontenc]{beamer}
 \\usepackage{fontspec, xunicode, xltxtra}

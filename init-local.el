@@ -1,5 +1,5 @@
 ; Change color theme
-(load-theme 'sanityinc-tomorrow-night t)
+(load-theme 'sanityinc-solarized-dark t)
 ; Set TAB width to 4
 (setq tab-width 4)
 ; Set default indent width
