@@ -3,6 +3,13 @@
 ; @see https://github.com/timcharper/evil-surround
 (global-surround-mode 1)
 
+(defun toggle-org-or-message-mode ()
+  (interactive)
+  (if (eq major-mode 'message-mode)
+    (org-mode)
+    (if (eq major-mode 'org-mode) (message-mode))
+    ))
+
 ;; (evil-set-initial-state 'org-mode 'emacs)
 ;; Remap org-mode meta keys for convenience
 (evil-declare-key 'normal org-mode-map
@@ -10,7 +17,6 @@
     "gl" 'outline-next-visible-heading
     "H" 'org-beginning-of-line ; smarter behaviour on headlines etc.
     "L" 'org-end-of-line ; smarter behaviour on headlines etc.
-    "t" 'org-todo ; mark a TODO item as DONE
     ",c" 'org-cycle
     ",e" 'org-export-dispatch
     ",n" 'outline-next-visible-heading
@@ -48,7 +54,7 @@
         (help-mode . emacs)
         (eshell-mode . emacs)
         (shell-mode . emacs)
-        (message-mode . emacs)
+        ;;(message-mode . emacs)
         (magit-log-edit-mode . emacs)
         (fundamental-mode . emacs)
         (gtags-select-mode . emacs)
@@ -90,8 +96,11 @@
        (t (setq unread-command-events (append unread-command-events
                           (list evt))))))))
 
+
 (define-key evil-insert-state-map (kbd "C-e") 'move-end-of-line)
 (define-key evil-insert-state-map (kbd "C-k") 'kill-line)
+(define-key evil-visual-state-map (kbd ",k") 'evil-exit-visual-state)
+(define-key minibuffer-local-map (kbd ",k") 'abort-recursive-edit)
 
 (defun evilcvn-change-symbol-in-defun ()
   "mark the region in defun (definition of function) and use string replacing UI in evil-mode
@@ -109,6 +118,7 @@ to replace the symbol under cursor"
 (setq evil-leader/leader "," evil-leader/in-all-states t)
 (require 'evil-leader)
 (evil-leader/set-key
+  "em" 'erase-message-buffer
   "cx" 'copy-to-x-clipboard
   "px" 'paste-from-x-clipboard
   "ci" 'evilnc-comment-or-uncomment-lines
@@ -121,7 +131,7 @@ to replace the symbol under cursor"
   "cp" 'compile
   "ud" '(lambda ()(interactive) (gud-gdb (concat "gdb --fullname " (cppcm-get-exe-path-current-buffer))))
   "W" 'save-some-buffers
-  "K" 'kill-buffer-and-window
+  "K" 'kill-buffer-and-window ;; "k" is preserved to replace "C-g"
   "it" 'issue-tracker-increment-issue-id-under-cursor
   "bm" 'pomodoro-start ;; beat myself
   "." 'evil-ex
@@ -147,11 +157,16 @@ to replace the symbol under cursor"
   ;; recommended in html
   "md" 'mc/mark-all-like-this-dwim
   "rw" 'rotate-windows
-  "l" 'align-regexp
-  "x" 'er/expand-region
+  "om" 'toggle-org-or-message-mode
+  "al" 'align-regexp
+  "xx" 'er/expand-region
+  "xf" 'ido-find-file
+  "xb" 'ido-switch-buffer
+  "xc" 'save-buffers-kill-terminal
   "vd" 'scroll-other-window
   "vu" '(lambda () (interactive) (scroll-other-window-down nil))
   "jj" 'w3mext-search-js-api-mdn
+  "zz" 'suspend-frame
   )
 ;; }}
 

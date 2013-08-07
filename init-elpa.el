@@ -152,15 +152,16 @@ ARCHIVE is the string name of the package archive.")
 (require-package 'maxframe)
 ;; org-mode is very important to me, so I always use the latest ersion
 ;; org 8.0 makes org2blog broken, so I just downgrade to the 7.8 and wait
-;; (require-package 'org '(20130506 0 0) t)
-(require-package 'org-mime)
+(require-package 'org '(20130805 0 0) t)
+;; org-mime is not upgrade in repository. I put right version in elpa
+;; (require-package 'org-mime)
 (require-package 'org-fstree)
 ;; I don't care mac
 ;;(when *is-a-mac*
 ;;  (require-package 'org-mac-link-grabber)
 ;;  (require-package 'org-mac-iCal))
 (require-package 'htmlize)
-(require-package 'org2blog '(20130115 2217 0) nil)
+(require-package 'org2blog '(20130704 908 0) nil)
 (require-package 'clojure-mode)
 (require-package 'clojure-test-mode)
 (require-package 'cljsbuild-mode)
@@ -228,7 +229,6 @@ ARCHIVE is the string name of the package archive.")
 (require-package 'etags-select '(1 13 0) nil) ;; evil may need it
 ;;evil-20120725 requires ert
 (require-package 'evil '(1 0 3) nil)
-(require-package 'evil-leader '(20130316 1414 0) nil)
 (require-package 'evil-numbers '(20120712 1933 0) nil)
 (require-package 'w3m)
 (require-package 'idomenu)
@@ -237,7 +237,7 @@ ARCHIVE is the string name of the package archive.")
 (require-package 'go-mode)
 (require-package 'switch-window)
 (require-package 'maxframe)
-(require-package 'cpputils-cmake '(0 3 3) t)
+(require-package 'cpputils-cmake '(0 3 4) t)
 (require-package 'flyspell-lazy)
 (require-package 'gtags)
 (require-package 'bbdb '(20130421 1145 0) nil)
