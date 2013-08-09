@@ -113,6 +113,9 @@
          )
         ))
 
+;; 避免 Evil 模式光标总是黑色
+(setq evil-default-cursor t)
+
 (require 'my-org-settings)
 
 (provide 'init-local)

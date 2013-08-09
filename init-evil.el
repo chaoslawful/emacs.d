@@ -176,7 +176,7 @@ to replace the symbol under cursor"
   (add-hook 'post-command-hook
             (lambda ()
               (let ((color (cond ((minibufferp) default-color)
-                                 ((evil-insert-state-p) '("#e80000" . "#ffffff"))
+                                 ((evil-insert-state-p) '("#004444" . "#ffffff"))
                                  ((evil-emacs-state-p)  '("#444488" . "#ffffff"))
                                  ((buffer-modified-p)   '("#006fa0" . "#ffffff"))
                                  (t default-color))))
