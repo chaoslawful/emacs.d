@@ -112,6 +112,11 @@
          :tags-as-categories nil
          )
         ))
+;; org2blog/wp-use-wp-latex 为 t 时需要安装 WP Latex 插件才能显示 LaTeX 片段
+;; 但其默认用 Wordpress 提供的转换服务生成 LaTeX 片段对应图片，在国内因墙的原因
+;; 无法正常显示，故推荐关闭该选项并使用其他能支持裸 LaTeX 片段的基于 MathJax
+;; 显示的插件，如 LaTeX for Wordpress 等
+(setq org2blog/wp-use-wp-latex nil)
 
 ;; 避免 Evil 模式光标总是黑色
 (setq evil-default-cursor t)

@@ -20,7 +20,7 @@
   (add-hook 'after-make-frame-functions
 			(lambda (frame)
 			  (with-selected-frame frame
-								   (set-fontset-font "fontset-default" 
+								   (set-fontset-font "fontset-default"
 													 'unicode "WenQuanyi Micro Hei Mono 12"))))
   (set-fontset-font "fontset-default" 'unicode "WenQuanYi Micro Hei Mono 12"))
 
@@ -161,6 +161,7 @@
 \\usepackage{latexsym}
 \\usepackage{natbib}
 \\usepackage{fancyhdr}
+\\usepackage{amsmath}
 
 \\geometry{a4paper, textwidth=6.5in, textheight=10in, marginparsep=7pt, marginparwidth=.6in}
 
